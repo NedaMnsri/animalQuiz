@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Kingdom Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="quiz-container">
+        <h1>Animal Kingdom Quiz</h1>
+        <div class="progress-bar">
+            <div id="progress-bar-inner" class="progress-bar-inner"></div>
+        </div>
+        <div id="timer" class="timer"></div>
+        <div id="question" class="question"></div>
+        <ul id="options" class="options"></ul>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            {
+                question: "What is the largest mammal in the world?",
+                options: ["Elephant", "Blue Whale", "Giraffe", "Hippo"],
+                answer: "Blue Whale"
+            },
+            {
+                question: "Which bird is known for its colorful plumage and impressive courtship dance?",
+                options: ["Peacock", "Sparrow", "Penguin", "Ostrich"],
+                answer: "Peacock"
+            },
+            {
+                question: "What is the fastest land animal?",
+                options: ["Cheetah", "Lion", "Horse", "Kangaroo"],
+                answer: "Cheetah"
+            },
+            {
+                question: "Which animal is known as the 'Ship of the Desert'?",
+                options: ["Camel", "Elephant", "Horse", "Donkey"],
+                answer: "Camel"
+            },
+            {
+                question: "What is a group of lions called?",
+                options: ["Pride", "Pack", "School", "Herd"],
+                answer: "Pride"
+            },
+            {
+                question: "Which animal can change its color to blend in with its surroundings?",
+                options: ["Chameleon", "Octopus", "Polar Bear", "Tiger"],
+                answer: "Chameleon"
+            },
+            {
+                question: "What is the largest species of terrestrial crab in the world?",
+                options: ["Hermit Crab", "King Crab", "Coconut Crab", "Snow Crab"],
+                answer: "Coconut Crab"
+            },
+            {
+                question: "Which mammal has the longest gestation period?",
+                options: ["Elephant", "Whale", "Giraffe", "Human"],
+                answer: "Elephant"
+            },
+            {
+                question: "What is the only mammal capable of true sustained flight?",
+                options: ["Flying Squirrel", "Pterosaur", "Bat", "Albatross"],
+                answer: "Bat"
+            },
+            {
+                question: "Which animal is known to have the most powerful bite in the animal kingdom?",
+                options: ["Great White Shark", "Crocodile", "Lion", "Hyena"],
+                answer: "Crocodile"
+            },
+            {
+                question: "What is the tallest animal in the world?",
+                options: ["Giraffe", "Elephant", "Ostrich", "Bear"],
+                answer: "Giraffe"
+            },
+            {
+                question: "Which sea creature has three hearts?",
+                options: ["Dolphin", "Octopus", "Shark", "Whale"],
+                answer: "Octopus"
+            },
+            {
+                question: "What type of animal is a 'Flemish Giant'?",
+                options: ["Dog", "Cat", "Rabbit", "Horse"],
+                answer: "Rabbit"
+            },
+            {
+                question: "Which animal is known for its ability to play dead as a defense mechanism?",
+                options: ["Opossum", "Armadillo", "Raccoon", "Squirrel"],
+                answer: "Opossum"
+            },
+            {
+                question: "What is the largest reptile in North America?",
+                options: ["Komodo Dragon", "American Alligator", "Crocodile", "Gila Monster"],
+                answer: "American Alligator"
+            },
+            {
+                question: "Which bird is the national symbol of the United States?",
+                options: ["Bald Eagle", "Pigeon", "Sparrow", "Hummingbird"],
+                answer: "Bald Eagle"
+            }
+
+        ];
+
+        quizQuestions.sort(() => Math.random() - 0.5);
+
+        let currentQuestion = 0;
+        let timer;
+        let progressBarTimer;
+
+        function displayQuestion() {
+            const question = document.getElementById('question');
+            const options = document.getElementById('options');
+            const progressBarInner = document.getElementById('progress-bar-inner');
+            question.textContent = quizQuestions[currentQuestion].question;
+            options.innerHTML = '';
+            quizQuestions[currentQuestion].options.forEach(option => {
+                const optionElement = document.createElement('li');
+                optionElement.textContent = option;
+                optionElement.onclick = selectOption;
+                options.appendChild(optionElement);
+            });
+            progressBarInner.style.width = '100%';
+            startTimer();
+        }
+
+        function selectOption(event) {
+            stopTimer();
+            const selectedOption = event.target.textContent;
+            const correctAnswer = quizQuestions[currentQuestion].answer;
+            if (selectedOption === correctAnswer) {
+                alert('Correct!');
+            } else {
+                alert('Wrong answer. Try again!');
+            }
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < quizQuestions.length) {
+                displayQuestion();
+            } else {
+                alert('Quiz completed!');
+            }
+        }
+
+        function startTimer() {
+            let time = 30; 
+            const timerElement = document.getElementById('timer');
+            const progressBarInner = document.getElementById('progress-bar-inner');
+            timerElement.textContent = `Time remaining: ${time}`;
+            progressBarInner.style.width = '100%';
+            timer = setInterval(() => {
+                time--;
+                timerElement.textContent = `Time remaining: ${time}`;
+                progressBarInner.style.width = `${(time / 30) * 100}%`;
+                if (time <= 0) {
+                    stopTimer();
+                    alert('Time is up!');
+                    nextQuestion();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+            clearInterval(progressBarTimer);
+        }
+
+        displayQuestion();
+    </script>
+</body>
+
+</html>
